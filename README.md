@@ -67,9 +67,45 @@ npm run build
 Para criar/atualizar um usuario administrador no Supabase (inclui perfil `role=admin`):
 
 ```bash
-npm run admin:bootstrap -- --email roberth@rcagropecuaria.com.br --password Villa667 --name Roberth
+npm run admin:bootstrap -- --email admin@dominio.com --password <PASSWORD_FORTE> --name Administrador
 ```
 
 Observacoes:
 - O script usa `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` do ambiente (ou `.env.local`).
 - Se o usuario ja existir, ele atualiza senha, confirma email e garante papel `admin`.
+
+## Importacao de Reels (ultimos 3 anos)
+
+Pipeline idempotente para:
+- ler `reels.json` do export do Instagram;
+- interpretar legenda (temas e tom narrativo);
+- subir video para bucket `acervo`;
+- inserir item no `acervo_items` + `item_tags`.
+
+Dry-run (nao sobe arquivos, nao grava no banco):
+
+```bash
+npm run reels:dry-run
+```
+
+Importacao real:
+
+```bash
+npm run reels:import
+```
+
+Opcoes uteis:
+
+```bash
+node scripts/import-instagram-reels.mjs --dry-run --limit 50
+node scripts/import-instagram-reels.mjs --limit 100 --offset 100
+node scripts/import-instagram-reels.mjs --from-date 2023-03-06 --to-date 2026-03-06
+node scripts/import-instagram-reels.mjs --only-uris "media/reels/202410/18088471381494551.mp4"
+```
+
+Deduplicacao de importacoes (quando necessario):
+
+```bash
+npm run reels:dedupe
+npm run reels:dedupe:apply
+```
