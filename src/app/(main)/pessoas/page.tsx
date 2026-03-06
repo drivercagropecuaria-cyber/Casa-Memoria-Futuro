@@ -1,4 +1,5 @@
 import { getPessoas } from "@/lib/supabase/data";
+import Link from "next/link";
 
 export default async function PessoasPage() {
   const pessoas = await getPessoas();
@@ -35,7 +36,9 @@ export default async function PessoasPage() {
               </span>
             </div>
             <h2 className="text-xl font-semibold mb-1" style={{ color: "var(--text-primary)" }}>
-              {pessoa.nome_completo}
+              <Link href={`/pessoas/${pessoa.id}`} className="hover:underline">
+                {pessoa.nome_completo}
+              </Link>
             </h2>
             <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>
               {pessoa.papel ?? "Sem papel informado"}
@@ -47,6 +50,13 @@ export default async function PessoasPage() {
               <p>Tempo na RC: {pessoa.tempo_empresa ?? "Nao informado"}</p>
               <p>Citacao: {pessoa.citacao_destaque ?? "Nao cadastrada"}</p>
             </div>
+            <Link
+              href={`/pessoas/${pessoa.id}`}
+              className="inline-block mt-3 text-sm underline"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Ver detalhe →
+            </Link>
           </article>
         ))}
       </section>

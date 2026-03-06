@@ -1,4 +1,5 @@
 import { searchAcervoItems } from "@/lib/supabase/data";
+import Link from "next/link";
 
 interface BuscaPageProps {
   searchParams: Promise<{ q?: string }>;
@@ -53,19 +54,29 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
       </section>
 
       <section className="space-y-3">
-        {results.map((item) => (
-          <article key={item.id} className="glass-card p-4">
-            <div className="text-xs uppercase mb-1" style={{ color: "var(--text-muted)" }}>
-              {item.tipo_midia} | {item.status}
-            </div>
-            <h2 className="text-base font-semibold mb-1" style={{ color: "var(--text-primary)" }}>
-              {item.titulo}
-            </h2>
-            <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-              {item.descricao ?? "Sem descricao"}
+        {results.length === 0 ? (
+          <article className="glass-card p-4">
+            <p style={{ color: "var(--text-secondary)" }}>
+              Nenhum item encontrado para esta busca.
             </p>
           </article>
-        ))}
+        ) : (
+          results.map((item) => (
+            <article key={item.id} className="glass-card p-4">
+              <div className="text-xs uppercase mb-1" style={{ color: "var(--text-muted)" }}>
+                {item.tipo_midia} | {item.status}
+              </div>
+              <h2 className="text-base font-semibold mb-1" style={{ color: "var(--text-primary)" }}>
+                <Link href={`/acervo/${item.id}`} className="underline">
+                  {item.titulo}
+                </Link>
+              </h2>
+              <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                {item.descricao ?? "Sem descricao"}
+              </p>
+            </article>
+          ))
+        )}
       </section>
     </div>
   );

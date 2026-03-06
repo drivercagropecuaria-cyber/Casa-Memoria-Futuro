@@ -1,4 +1,5 @@
 import { getColecoes } from "@/lib/supabase/data";
+import Link from "next/link";
 
 export default async function ColecoesPage() {
   const colecoes = await getColecoes();
@@ -50,6 +51,13 @@ export default async function ColecoesPage() {
               <div className="text-xs" style={{ color: "var(--text-muted)" }}>
                 Slug: {colecao.slug} | Itens: {colecao.item_count ?? colecao.items?.length ?? 0}
               </div>
+              <Link
+                href={`/colecoes/${colecao.slug}`}
+                className="inline-block mt-3 text-sm underline"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Abrir colecao →
+              </Link>
             </article>
           ))
         )}

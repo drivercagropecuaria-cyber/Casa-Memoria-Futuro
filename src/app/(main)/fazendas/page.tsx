@@ -1,4 +1,5 @@
 import { getFazendas } from "@/lib/supabase/data";
+import Link from "next/link";
 
 export default async function FazendasPage() {
   const fazendas = await getFazendas();
@@ -31,7 +32,9 @@ export default async function FazendasPage() {
               ) : null}
             </div>
             <h2 className="text-xl font-semibold mb-1" style={{ color: "var(--text-primary)" }}>
-              {fazenda.nome}
+              <Link href={`/fazendas/${fazenda.id}`} className="hover:underline">
+                {fazenda.nome}
+              </Link>
             </h2>
             <p className="text-sm mb-3" style={{ color: "var(--text-secondary)" }}>
               {fazenda.municipio ?? "Municipio nao informado"} - {fazenda.estado}
@@ -44,6 +47,13 @@ export default async function FazendasPage() {
               <p>Area: {fazenda.area_hectares ? `${fazenda.area_hectares} ha` : "Nao informada"}</p>
               <p>Infraestrutura: {fazenda.infraestrutura ?? "Nao detalhada"}</p>
             </div>
+            <Link
+              href={`/fazendas/${fazenda.id}`}
+              className="inline-block mt-3 text-sm underline"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Ver detalhe →
+            </Link>
           </article>
         ))}
       </section>
