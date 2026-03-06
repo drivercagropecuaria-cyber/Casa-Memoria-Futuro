@@ -2,6 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+const ADMIN_ROLES = new Set(["admin", "curador"]);
+
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -34,6 +36,20 @@ export async function proxy(request: NextRequest) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  if (user && request.nextUrl.pathname.startsWith("/admin")) {
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (profileError || !profile || !ADMIN_ROLES.has(profile.role)) {
+      const homeUrl = new URL("/", request.url);
+      homeUrl.searchParams.set("forbidden", "1");
+      return NextResponse.redirect(homeUrl);
+    }
   }
 
   return response;

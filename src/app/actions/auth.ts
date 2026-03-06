@@ -28,6 +28,33 @@ export async function signIn(
     return { error: error.message };
   }
 
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return { error: userError?.message ?? "Falha ao recuperar sessao apos login." };
+  }
+
+  const nome =
+    ((user.user_metadata?.nome as string | undefined) ?? "").trim() ||
+    user.email ||
+    null;
+
+  const { error: profileError } = await supabase.from("profiles").upsert(
+    {
+      id: user.id,
+      nome,
+      role: "visitante",
+    },
+    { onConflict: "id", ignoreDuplicates: true }
+  );
+
+  if (profileError) {
+    console.error("[auth:signIn] Falha ao sincronizar perfil", profileError);
+  }
+
   redirect(next);
 }
 

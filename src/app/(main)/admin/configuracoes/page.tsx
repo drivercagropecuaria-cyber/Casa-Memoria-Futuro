@@ -22,7 +22,7 @@ export default function AdminConfiguracoesPage() {
     },
     {
       title: "Autenticacao",
-      text: "Login com Supabase Auth. Rotas /admin/* protegidas por middleware SSR.",
+      text: "Login com Supabase Auth. Rotas /admin/* protegidas por proxy SSR com validacao de papel.",
       value: "Ativa",
     },
     {
@@ -37,8 +37,8 @@ export default function AdminConfiguracoesPage() {
     },
     {
       title: "Proxima entrega",
-      text: "Paginas de detalhe por item, paginas individuais de fazenda e pessoa.",
-      value: "Sprint 3",
+      text: "Observabilidade de operacao, trilha de auditoria e melhorias de experiencia editorial.",
+      value: "Sprint 4",
     },
   ];
 

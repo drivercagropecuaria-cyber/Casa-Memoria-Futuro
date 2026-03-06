@@ -1,7 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createServerDataClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { requireCuratorProfile } from "@/lib/supabase/authz";
 import type { TipoMidia } from "@/types/database";
 
 export async function createAcervoItemFromUpload(opts: {
@@ -14,7 +15,16 @@ export async function createAcervoItemFromUpload(opts: {
   formato_original: string | null;
   url_public: string | null;
 }): Promise<{ success: boolean; id?: string; error?: string }> {
-  const supabase = createServerDataClient();
+  try {
+    await requireCuratorProfile();
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Permissao insuficiente.",
+    };
+  }
+
+  const supabase = await createServerSupabaseClient();
 
   const { data: inserted, error } = await supabase
     .from("acervo_items")
