@@ -1,0 +1,285 @@
+@import "tailwindcss";
+
+/* ================================================================
+   CASA DE MEMORIA E FUTURO — Design Tokens
+   ================================================================ */
+
+:root {
+  /* Font fallbacks (offline-safe) */
+  --font-playfair: "Georgia";
+  --font-jakarta: "Segoe UI";
+  --font-jetbrains: "Consolas";
+
+  /* Backgrounds */
+  --bg-deep: #080a08;
+  --bg-surface: #0c100c;
+  --bg-elevated: #111411;
+  --bg-hover: #181c18;
+
+  /* Brand Colors */
+  --rc-gold: #D4AF37;
+  --rc-gold-dim: rgba(212, 175, 55, 0.08);
+  --rc-gold-glow: rgba(212, 175, 55, 0.15);
+  --rc-green: #1A5F1A;
+  --rc-green-bright: #4ade80;
+  --rc-green-dim: rgba(74, 222, 128, 0.08);
+  --rc-glass: rgba(15, 20, 15, 0.65);
+
+  /* Text */
+  --text-primary: #F5F5F7;
+  --text-secondary: #A1A1AA;
+  --text-muted: #6b6b80;
+  --text-dim: #3d3d50;
+
+  /* Accents */
+  --accent-blue: #5b8def;
+  --accent-purple: #a78bfa;
+  --accent-amber: #f59e0b;
+  --accent-red: #f87171;
+  --accent-cyan: #22d3ee;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-active: rgba(255, 255, 255, 0.12);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+
+  /* Spacing */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --sp-24: 6rem;
+  --sp-32: 8rem;
+}
+
+@theme inline {
+  --color-background: var(--bg-deep);
+  --color-foreground: var(--text-primary);
+  --color-rc-gold: var(--rc-gold);
+  --color-rc-green: var(--rc-green);
+  --color-rc-green-bright: var(--rc-green-bright);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-muted: var(--text-secondary);
+  --color-dim: var(--text-muted);
+  --color-border: var(--border);
+  --font-editorial: var(--font-playfair);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* ================================================================
+   BASE
+   ================================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-secondary);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.3);
+  color: var(--text-primary);
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--rc-gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ================================================================
+   GLASSMORPHISM CARD
+   ================================================================ */
+
+.glass-card {
+  background: var(--rc-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-md);
+}
+
+/* ================================================================
+   GRAIN OVERLAY
+   ================================================================ */
+
+.grain-overlay::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ================================================================
+   SIDEBAR
+   ================================================================ */
+
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  padding: var(--sp-6) var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-nav {
+  padding: var(--sp-4) var(--sp-3);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 150ms;
+  text-decoration: none;
+}
+
+.sidebar-nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.sidebar-nav-item.active {
+  background: var(--rc-gold-dim);
+  color: var(--rc-gold);
+}
+
+.sidebar-section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--sp-4) var(--sp-3) var(--sp-2);
+}
+
+/* ================================================================
+   MAIN CONTENT
+   ================================================================ */
+
+.main-content {
+  margin-left: 280px;
+  min-height: 100vh;
+}
+
+.mobile-nav-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 90;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  border: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 300ms;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-nav-toggle,
+  .mobile-backdrop {
+    display: none;
+  }
+}
+
+/* ================================================================
+   REDUCED MOTION
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
