@@ -61,3 +61,15 @@ npm run build
   - login `/login`
   - rotas de conteudo (`/acervo`, `/colecoes`, `/timeline`)
   - rotas admin (`/admin/*`)
+
+## Bootstrap de administrador
+
+Para criar/atualizar um usuario administrador no Supabase (inclui perfil `role=admin`):
+
+```bash
+npm run admin:bootstrap -- --email roberth@rcagropecuaria.com.br --password Villa667 --name Roberth
+```
+
+Observacoes:
+- O script usa `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` do ambiente (ou `.env.local`).
+- Se o usuario ja existir, ele atualiza senha, confirma email e garante papel `admin`.
